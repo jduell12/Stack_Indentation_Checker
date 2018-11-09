@@ -1,1 +1,2 @@
 # Stack_Indentation_Checker
+Program that can read in a series of files which are passed in as command line arguments. Program reads through the files and generates listings with line numbers. While generating the listings the program checks for the correctness of the indentation used in the program with a "stack" algorithm. When improper indentation is found, the program stops processing the file and moves onto the next file. 
