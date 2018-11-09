@@ -1,4 +1,5 @@
 
+
 import java.io.*;
 import java.util.*;
 
@@ -67,22 +68,19 @@ public class Stack_indentation_checker {
 	private void processLine(String line, int lineNumber) {
 		int index = findFirstNonBlank(line);
 		
-
+		
 		if (index == -1) {
 			System.out.print("");
-		} else {
-			if (indentStack.isEmpty()) {
-				indentStack.push(index);
-			} else if (indentStack.peek() < index) {
-				indentStack.push(index);
-			} else if (indentStack.peek() > index) {
-				indentStack.pop();
-			}
-
-			if (index != indentStack.peek()) {
-				String error1 = "Bad indentation syntax found at lineNumber: " + lineNumber;
-				throw new IndentException(error1);
-			}
+		} else if (indentStack.isEmpty()) {
+			indentStack.push(index);
+		} else if (indentStack.peek() < index) {
+			indentStack.pop();
+			indentStack.push(index);
+		} else if (indentStack.peek() > index) {
+			indentStack.pop();
+		} else if (index != indentStack.peek()) {
+			String error1 = "Bad indentation syntax found at lineNumber: " + lineNumber;
+			throw new IndentException(error1);
 		}
 		
 	}
