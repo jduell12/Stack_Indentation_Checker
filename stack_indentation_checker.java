@@ -1,5 +1,4 @@
 
-
 import java.io.*;
 import java.util.*;
 
@@ -47,21 +46,31 @@ public class Stack_indentation_checker {
 	private int findFirstNonBlank(String line) {
 		int index = 0;
 		
-		for (int i = 0; i < line.length(); i++) {
-			if (line.charAt(i) != -1) {
-				index = i;
-			} else {
-				index = -1;
+		if (line.isEmpty()) {
+			index = -1;
+		} else {
+			char [] letters = line.toCharArray();
+			for (int i = 0; i < letters.length; i++ ) {
+				if (Character.isWhitespace(letters[i])) {
+					index = i;
+				} else {
+					index = i;
+					i = letters.length;
+				}
 			}
 		}
-		
+		System.out.println("index: " + index + " ");
 		return index;
+		
 	}
 
 	private void processLine(String line, int lineNumber) {
 		int index = findFirstNonBlank(line);
+		
 
-		if (index != -1) {
+		if (index == -1) {
+			System.out.print("");
+		} else {
 			if (indentStack.isEmpty()) {
 				indentStack.push(index);
 			} else if (indentStack.peek() < index) {
@@ -74,9 +83,8 @@ public class Stack_indentation_checker {
 				String error1 = "Bad indentation syntax found at lineNumber: " + lineNumber;
 				throw new IndentException(error1);
 			}
-		} else {
-			System.out.println("");
 		}
+		
 	}
 
 	public static void main(String[] args) {
