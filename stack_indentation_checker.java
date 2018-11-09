@@ -48,21 +48,20 @@ public class Stack_indentation_checker {
 		int index = 0;
 		
 		for (int i = 0; i < line.length(); i++) {
-			if (line.charAt(i) == -1) {
-				index = -1;
-				return index;
-			} else {
+			if (line.charAt(i) != -1) {
 				index = i;
-				return index;
+			} else {
+				index = -1;
 			}
 		}
+		
 		return index;
 	}
 
 	private void processLine(String line, int lineNumber) {
 		int index = findFirstNonBlank(line);
 
-		while (index != -1) {
+		if (index != -1) {
 			if (indentStack.isEmpty()) {
 				indentStack.push(index);
 			} else if (indentStack.peek() < index) {
@@ -75,6 +74,8 @@ public class Stack_indentation_checker {
 				String error1 = "Bad indentation syntax found at lineNumber: " + lineNumber;
 				throw new IndentException(error1);
 			}
+		} else {
+			System.out.println("");
 		}
 	}
 
