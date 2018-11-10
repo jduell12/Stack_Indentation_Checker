@@ -26,13 +26,6 @@ public class Stack_indentation_checker {
 
 				lineNumber += 1;
 			}
-			if (indentStack.isEmpty()) {
-				System.out.println(fileName + " has proper indentation.");
-			} else {
-				while (!indentStack.isEmpty()) {
-
-				}
-			}
 		} catch (IndentException error) {
 			System.out.println(error);
 		} catch (FileNotFoundException e) {
@@ -42,47 +35,72 @@ public class Stack_indentation_checker {
 				input.close();
 			}
 		}
+		if (indentStack.peek() == 0) {
+			System.out.println("***************" + fileName + " must be properly indented.");
+		}
+
 	}
 
 	private int findFirstNonBlank(String line) {
 		int index = 0;
-		
+
 		if (line.isEmpty()) {
 			index = -1;
 		} else {
-			char [] letters = line.toCharArray();
-			for (int i = 0; i < letters.length; i++ ) {
+			char[] letters = line.toCharArray();
+			for (int i = 0; i < letters.length; i++) {
 				if (Character.isWhitespace(letters[i])) {
-					index = i;
+					index = -1;
 				} else {
 					index = i;
 					i = letters.length;
 				}
 			}
 		}
-		System.out.println("index: " + index + " ");
 		return index;
-		
+
 	}
 
 	private void processLine(String line, int lineNumber) {
 		int index = findFirstNonBlank(line);
-		
-		
+		Object[] stackArr = indentStack.toArray();
+
+		int a = 10;
 		if (index == -1) {
-			System.out.print("");
+			a = -1;
 		} else if (indentStack.isEmpty()) {
-			indentStack.push(index);
+			a = 0;
 		} else if (indentStack.peek() < index) {
-			indentStack.pop();
-			indentStack.push(index);
+			a = 1;
 		} else if (indentStack.peek() > index) {
-			indentStack.pop();
-		} else if (index != indentStack.peek()) {
-			String error1 = "Bad indentation syntax found at lineNumber: " + lineNumber;
-			throw new IndentException(error1);
+			a = 2;
 		}
-		
+
+		switch (a) {
+		case -1:
+			break;
+		case 0:
+			indentStack.push(index);
+			break;
+		case 1:
+			indentStack.push(index);
+			break;
+		case 2:
+			for (int i = 0; i < stackArr.length; i++) {
+				if ((Integer) stackArr[i] > index) {
+					indentStack.pop();
+				}
+			}
+
+			if (indentStack.peek() != index) {
+				String error1 = "Bad indentation syntax found at lineNumber: " + lineNumber;
+				throw new IndentException(error1);
+			}
+			break;
+		default:
+			System.out.println("default");
+			break;
+		}
 	}
 
 	public static void main(String[] args) {
