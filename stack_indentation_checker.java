@@ -1,5 +1,4 @@
 
-
 import java.io.*;
 import java.util.*;
 
@@ -41,6 +40,7 @@ public class Stack_indentation_checker {
 
 	}
 
+	//finds the index of the first non blank character. If a line is empty the program prints the line number and moves to the next line
 	private int findFirstNonBlank(String line) {
 		int index = 0;
 
@@ -61,6 +61,7 @@ public class Stack_indentation_checker {
 
 	}
 
+	// processes each line of the file. Checks the index of the first non blank character against the indices in the stack
 	private void processLine(String line, int lineNumber) {
 		int index = findFirstNonBlank(line);
 		Object[] stackArr = indentStack.toArray();
